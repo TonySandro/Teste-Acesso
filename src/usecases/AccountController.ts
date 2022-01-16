@@ -7,6 +7,10 @@ async function getMethod(id?: string) {
 
         let data = await api.get(`/Account/${id}`).then(result => {
             return result.data
+        }).catch(err => {
+            return err.status(500).json({
+                message: err.message || 'Unexpected error.'
+            })
         })
 
         return data
@@ -31,6 +35,7 @@ export async function getAccountById(req: Request, res: Response) {
     try {
         const { id } = req.params
         let data = await getMethod(id)
+        // data = data.find(element => element.accountNumber === id)
 
         return res.status(201).send(data)
     } catch (error) {
