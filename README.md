@@ -10,6 +10,8 @@ Deve haver endpoint para consulta de status de transferências.
   - Nestes casos é necessário retornar o motivo do erro
 
 Exibir os logs de todas as operações
+
 Tempo de resposta deve ser baixo
+
 Menor quantidade de erros possível
 
