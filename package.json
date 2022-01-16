@@ -1,0 +1,24 @@
+{
+  "name": "Teste-AcessoBankly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TonySandro/Teste-Acesso.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TonySandro/Teste-Acesso/issues"
+  },
+  "homepage": "https://github.com/TonySandro/Teste-Acesso#readme",
+  "dependencies": {
+    "@types/node": "^17.0.8",
+    "typescript": "^4.5.4"
+  }
+}
