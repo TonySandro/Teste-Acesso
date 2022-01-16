@@ -1,11 +1,24 @@
 import { Request, Response } from "express";
 import { api } from "../api";
 
-export async function getAllAccounts(req: Request, res: Response) {
+async function getMethod(id?: string) {
     try {
-        let data = await api.get('/Account').then(result => {
+        if (!id) id = '';
+
+        let data = await api.get(`/Account/${id}`).then(result => {
             return result.data
         })
+
+        return data
+    } catch (error) {
+        return error
+    }
+
+}
+
+export async function getAllAccounts(req: Request, res: Response) {
+    try {
+        let data = await getMethod()
         return res.status(201).send(data)
     } catch (error) {
         return res.status(400).json({
@@ -17,9 +30,8 @@ export async function getAllAccounts(req: Request, res: Response) {
 export async function getAccountById(req: Request, res: Response) {
     try {
         const { id } = req.params
-        let data = await api.get(`/Account/${id}`).then(result => {
-            return result.data
-        })
+        let data = await getMethod(id)
+
         return res.status(201).send(data)
     } catch (error) {
         return res.status(400).json({
