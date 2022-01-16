@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getAccountById, getAllAccounts } from "./usecases/AccountController";
-import { valueTransfer } from "./usecases/TransferController";
+import { getAccountById, getAllAccounts } from "../usecases/AccountController";
+import { valueTransfer } from "../usecases/TransferController";
 
 const router = Router()
 

@@ -18,11 +18,16 @@
     "url": "https://github.com/TonySandro/Teste-Acesso/issues"
   },
   "homepage": "https://github.com/TonySandro/Teste-Acesso#readme",
-  "dependencies": {
+  
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/mongoose": "^5.11.97",
-    "@types/node": "^17.0.8",
+    "@types/node": "^17.0.8"
+  },
+  "dependencies": {
     "axios": "^0.24.0",
+    "dotenv": "^12.0.4",
     "express": "^4.17.2",
     "mongoose": "^6.1.6",
     "ts-node-dev": "^1.1.8",
