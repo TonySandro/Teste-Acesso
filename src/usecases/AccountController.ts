@@ -5,14 +5,11 @@ async function getMethod(id?: string) {
     try {
         if (!id) id = '';
 
-        let data = await api.get(`/Account/${id}`).then(result => {
+        const data = await api.get(`/Account/${id}`).then(result => {
             return result.data
         }).catch(err => {
-            return err.status(500).json({
-                message: err.message || 'Unexpected error.'
-            })
+            return err.response.status
         })
-
         return data
     } catch (error) {
         return error
