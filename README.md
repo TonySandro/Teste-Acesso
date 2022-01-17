@@ -32,6 +32,16 @@ Menor quantidade de erros possível
 
 **GET api/fund-transfer/{{transactionId}}**
 
+### Request account by accountNumber
+
+**GET api/Account/{accountNumber}**
+
 ### Request all accounts
 
 **GET api/Account/{accountNumber}**
+
+### Docker
+
+Para iniciar o container do docker:
+
+` docker-compose up`
