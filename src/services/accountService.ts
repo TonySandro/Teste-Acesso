@@ -7,7 +7,8 @@ export class AccountService {
             const data = await api.get('/Account').then(result => {
                 return result.data
             })
-            return res.status(200).send(data)
+
+            return res.send(data)
         } catch (error) {
             return res.send({
                 message: error.message || 'Unexpected error.'
@@ -21,12 +22,12 @@ export class AccountService {
             const data = await api.get(`/Account/${id}`).then(result => {
                 return result.data
             })
-            console.log(data)
 
             return res.send(data)
         } catch (error) {
             return res.send({
-                message: error.message || 'Unexpected error.'
+                Status: "Error",
+                Message: "Invalid account number"
             })
         }
     }

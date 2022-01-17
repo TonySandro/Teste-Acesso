@@ -1,17 +1,25 @@
 import { Router } from "express";
+import { TransactionController } from "./controller/transactionController";
 import { AccountService } from "./services/accountService";
-import { TransferService } from "./services/transferService";
-const transfer = new TransferService()
+import { TransactionService } from "./services/transactionService";
+
+const transactionController = new TransactionController()
+const transaction = new TransactionService()
 const account = new AccountService()
+
 const router = Router()
 
 
 router.get('/api/Account', account.getAllAccounts)
 router.get('/api/Account/:id', account.getByAccountNumber)
 
-// router.get('api/fund-transfer/:id')
+router.get('/api/index', transactionController.index)
 
-router.post('/api/fund-transfer', transfer.valueTransfer)
-router.post('/api/deposit-value', transfer.depositValue)
+// router.get('api/fund-transaction/:id')
+
+router.post('/api/fund-transfer', transaction.valueTransaction)
+router.post('/api/deposit-value', transaction.depositValue)
+
+router.post('/api/store', transactionController.store)
 
 export { router }
