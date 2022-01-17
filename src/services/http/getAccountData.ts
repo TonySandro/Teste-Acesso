@@ -1,6 +1,6 @@
 import { api } from "../../api"
 
-export const adapterGetByAccountNumber = async (id?: string) => {
+export const getDataByAccountNumber = async (id?: string) => {
     const data = await api.get(`/Account/${id}`).then(result => {
         return result.data
     })
