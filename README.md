@@ -31,3 +31,7 @@ Menor quantidade de erros possível
 ### Request Status
 
 **GET api/fund-transfer/{{transactionId}}**
+
+### Request all accounts
+
+**GET api/Account/{accountNumber}**
