@@ -18,7 +18,6 @@ router.get('/api/index', transactionController.index)
 // router.get('api/fund-transaction/:id')
 
 router.post('/api/fund-transfer', transaction.valueTransaction)
-router.post('/api/deposit-value', transaction.depositValue)
 
 router.post('/api/store', transactionController.store)
 
