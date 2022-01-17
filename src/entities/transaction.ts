@@ -1,7 +1,6 @@
 import { uuid } from "uuidv4";
 
 export class Transaction {
-    public id: string
     public transactionId?: string
 
     public accountOrigin: string
@@ -13,12 +12,9 @@ export class Transaction {
 
     constructor(props: Omit<Transaction, 'transactionId'>, transactionId?: string) {
         Object.assign(this, props)
-
-        if (!this.id) {
-            this.id = uuid()
-        }
         if (!transactionId) {
             this.transactionId = uuid()
         }
+
     }
 }
