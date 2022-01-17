@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    container_name: testAcesso
+    restart: always
+    command: yarn start
+    ports:
+      - "3333:3333"
+    volumes:
+      - .:/usr/app
+
+  accounts:
+    image: baldini/testacesso
+    container_name: apiAcesso
+    ports:
+      - "5000:80"
