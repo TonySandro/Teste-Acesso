@@ -1,52 +1,26 @@
 import { Request, Response } from "express";
 import { api } from "../api";
 import { TransactionController } from "../controller/transactionController";
-import { adapterGetByAccountNumber } from "./helpers/methodSevice";
+import { getDataByAccountNumber } from "./http/getAccountData";
+import { postCreditOrDebit } from "./http/postCreditOrDebit";
 
 const transactionController = new TransactionController()
 
 export class TransactionService {
-    async depositValue(req: Request, res: Response) {
-        try {
-            const { accountNumber, value, type } = req.body
-
-            await api.post(`/Account`, {
-                accountNumber: accountNumber,
-                value: value,
-                type: type
-            })
-
-            return res.status(201).send("Confirmed")
-        } catch (error) {
-            return res.json({
-                message: error.message || 'Unexpected error.'
-            })
-        }
-    }
-
     async valueTransaction(req: Request, res: Response) {
         try {
             const { accountOrigin, accountDestination, value } = req.body
 
-            let accountOriginVerify = adapterGetByAccountNumber(accountOrigin)
-            let accountDestinationVerify = adapterGetByAccountNumber(accountDestination)
+            let accountOriginVerify = getDataByAccountNumber(accountOrigin)
+            let accountDestinationVerify = getDataByAccountNumber(accountDestination)
 
             Promise.all([accountOriginVerify, accountDestinationVerify])
 
             if (accountOriginVerify !== undefined && accountDestinationVerify !== undefined) {
                 const result = transactionController.transactionValidate(accountOrigin, accountDestination, value)
                 if (result) {
-                    let debit = api.post(`/Account`, {
-                        accountNumber: accountOrigin,
-                        value: value,
-                        type: "Debit"
-                    })
-
-                    let credit = api.post(`/Account`, {
-                        accountNumber: accountDestination,
-                        value: value,
-                        type: "Credit"
-                    })
+                    let debit = postCreditOrDebit(accountOrigin, value, "Debit")
+                    let credit = postCreditOrDebit(accountOrigin, value, "Credit")
 
                     Promise.all([debit, credit])
                 }
