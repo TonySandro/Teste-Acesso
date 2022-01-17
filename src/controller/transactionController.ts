@@ -3,12 +3,12 @@ export class TransactionController {
     public transactionValidate(
         accountOrigin: string,
         accountDestination: string,
-        valueAccountOrigin: number
+        valueToTransfer: number,
+        balanceAccountOrigin: number
     ): boolean {
-        let balanceAccountOrigin = 0
 
         if (accountOrigin && accountDestination) {
-            if (valueAccountOrigin >= balanceAccountOrigin) {
+            if (valueToTransfer >= balanceAccountOrigin) {
                 return true
             }
         }

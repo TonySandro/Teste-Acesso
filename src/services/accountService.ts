@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { api } from "../api"
+import { getDataByAccountNumber } from "./http/getDataAccount"
 
 export class AccountService {
     async getAllAccounts(req: Request, res: Response) {
@@ -19,9 +20,7 @@ export class AccountService {
     async getByAccountNumber(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const data = await api.get(`/Account/${id}`).then(result => {
-                return result.data
-            })
+            const data = await getDataByAccountNumber(id)
 
             return res.send(data)
         } catch (error) {

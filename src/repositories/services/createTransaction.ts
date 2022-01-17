@@ -1,4 +1,3 @@
-import { uuid } from "uuidv4"
 import { Transaction } from "../../entities/transaction"
 import transactionSchema from "../../Schemas/transactionSchema"
 
@@ -13,8 +12,7 @@ export class CreateTransactions {
             }
         )
 
-        console.log("Ops", transaction)
-        // await transactionSchema.create(transaction)
+        await transactionSchema.create(transaction)
 
         return transaction
     }
