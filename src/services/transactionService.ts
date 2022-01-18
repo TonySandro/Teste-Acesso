@@ -15,12 +15,12 @@ export class TransactionService {
 
             let accountOriginVerify = getDataByAccountNumber(accountOrigin)
             let accountDestinationVerify = getDataByAccountNumber(accountDestination)
-            Promise.all([accountOriginVerify, accountDestinationVerify])
 
-            let accOrigin = (await Promise.resolve(accountOriginVerify)).status
+            Promise.all([accountOriginVerify, accountDestinationVerify])
 
             if ((await Promise.resolve(accountOriginVerify)).status !== 200 &&
                 (await Promise.resolve(accountDestinationVerify)).status !== 200) {
+
                 const result = transactionController.transactionValidate(accountOrigin, accountDestination, value, 200)
                 //If validation returns true
                 if (result) {
@@ -28,9 +28,9 @@ export class TransactionService {
                     await postCreditOrDebit(accountOrigin, accountDestination, value)
                 }
             }
-
             //Send the transaction to the database and return the transactionId
             const transaction = createTransactions.insertTransaction(req.body)
+
             return res.status(200).json((await transaction).transactionId)
         } catch (error) {
             res.json({

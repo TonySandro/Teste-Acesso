@@ -8,7 +8,7 @@ export const postCreditOrDebit = async (accountOrigin: string, accountDestinatio
             type: "Debit"
         })
 
-        let credit = await api.post(`/Account`, {
+        let credit = api.post(`/Account`, {
             accountNumber: accountDestination,
             value: value,
             type: "Credit"
