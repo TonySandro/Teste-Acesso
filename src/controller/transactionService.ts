@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { api } from "../api";
-import { TransactionController } from "../controller/transactionController";
+import { TransactionController } from "../service/transactionController";
 import { CreateTransactions } from "../repositories/services/createTransaction";
 import { getDataByAccountNumber } from "./http/getDataAccount";
 import { postCreditOrDebit } from "./http/postCreditOrDebit";

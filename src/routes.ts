@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { AccountService } from "./services/accountService";
-import { TransactionService } from "./services/transactionService";
+import { AccountService } from "./controller/accountService";
+import { TransactionService } from "./controller/transactionService";
 
 const transaction = new TransactionService()
 const account = new AccountService()
