@@ -9,7 +9,10 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
     class AccountValidatorStub implements AccountValidator {
-        isValid(account: string): boolean {
+        accountOriginIsValid(account: string): boolean {
+            return true
+        }
+        accountDestinationIsValid(account: string): boolean {
             return true
         }
     }
@@ -67,7 +70,7 @@ describe('Transaction Controller', () => {
 
     test('Should return 400 if an invalid accountOrigin is provided', () => {
         const { sut, accountValidatorStub } = makeSut()
-        jest.spyOn(accountValidatorStub, 'isValid').mockReturnValueOnce(false)
+        jest.spyOn(accountValidatorStub, 'accountOriginIsValid').mockReturnValueOnce(false)
         const httpRequest = {
             body: {
                 accountOrigin: "invalid_accountOrigin",
@@ -75,8 +78,27 @@ describe('Transaction Controller', () => {
                 value: 123
             }
         }
+
         const httpResponse = sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body).toEqual(new InvalidParamError('accountOrigin'))
+    })
+
+    test('Should return 400 if an invalid accountDestination is provided', () => {
+        const { sut, accountValidatorStub } = makeSut()
+        jest.spyOn(accountValidatorStub, 'accountDestinationIsValid').mockReturnValueOnce(false)
+        const httpRequest = {
+            body: {
+                accountOrigin: "any_accountOrigin",
+                accountDestination: "invalid_accountDestination",
+                value: 123
+            }
+        }
+
+        const httpResponse = sut.handle(httpRequest)
+
+        console.error(httpResponse.body)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse.body).toEqual(new InvalidParamError('accountDestination'))
     })
 })

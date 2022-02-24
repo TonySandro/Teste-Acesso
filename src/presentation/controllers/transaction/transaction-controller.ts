@@ -17,9 +17,14 @@ export class TransactionController implements Controller {
             }
         }
 
-        const accountOriginIsValid = this.accountValidator.isValid(httpRequest.body.accountOrigin)
+        const accountOriginIsValid = this.accountValidator.accountOriginIsValid(httpRequest.body.accountOrigin)
         if (!accountOriginIsValid) {
             return badRequest(new InvalidParamError('accountOrigin'))
+        }
+
+        const accountDestinationIsValid = this.accountValidator.accountDestinationIsValid(httpRequest.body.accountDestination)
+        if (!accountDestinationIsValid) {
+            return badRequest(new InvalidParamError('accountDestination'))
         }
     }
 }

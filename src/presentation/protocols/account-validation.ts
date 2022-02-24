@@ -1,3 +1,5 @@
 export interface AccountValidator {
-    isValid(account: string): boolean
+    accountOriginIsValid(account: string): boolean
+
+    accountDestinationIsValid(account: string): boolean
 }
