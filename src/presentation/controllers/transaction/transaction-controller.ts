@@ -2,8 +2,8 @@ export class TransactionController {
     handle(httpRequest: any): any {
 
         return {
-            body: {},
-            statusCode: 400
+            statusCode: 400,
+            body: new Error('Missing param: accountOrigin')
         }
     }
 }
