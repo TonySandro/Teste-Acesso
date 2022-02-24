@@ -1,4 +1,5 @@
-import { HttpRequest, HttpResponse } from "@presentation/protocols/http"
+import { MissingParamError } from "../../errors/missing-param-error"
+import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class TransactionController {
     handle(httpRequest: HttpRequest): HttpResponse {
@@ -10,7 +11,7 @@ export class TransactionController {
 
         return {
             statusCode: 400,
-            body: new Error(`Missing param: ${errorParam}`)
+            body: new MissingParamError(`Missing param: ${errorParam}`)
         }
     }
 }
