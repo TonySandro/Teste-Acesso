@@ -9,9 +9,13 @@ export class TransactionController {
             errorParam = 'accountDestination'
         }
 
+        if (!httpRequest.body.value) {
+            errorParam = 'value'
+        }
+
         return {
             statusCode: 400,
-            body: new MissingParamError(`Missing param: ${errorParam}`)
+            body: new MissingParamError(errorParam)
         }
     }
 }
