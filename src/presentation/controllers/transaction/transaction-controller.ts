@@ -1,21 +1,22 @@
+import { badRequest } from "../..//helpers/http/http-helper"
 import { MissingParamError } from "../../errors/missing-param-error"
 import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class TransactionController {
     handle(httpRequest: HttpRequest): HttpResponse {
-        let errorParam = 'accountOrigin'
+        const { accountOrigin, accountDestination, value } = httpRequest.body
 
-        if (!httpRequest.body.accountDestination) {
-            errorParam = 'accountDestination'
+        if (!accountOrigin) {
+            return badRequest(new MissingParamError('accountOrigin'))
         }
 
-        if (!httpRequest.body.value) {
-            errorParam = 'value'
+        if (!accountDestination) {
+            return badRequest(new MissingParamError('accountDestination'))
         }
 
-        return {
-            statusCode: 400,
-            body: new MissingParamError(errorParam)
+        if (!value) {
+            return badRequest(new MissingParamError('value'))
         }
+
     }
 }
