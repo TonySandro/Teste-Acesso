@@ -4,19 +4,13 @@ import { HttpRequest, HttpResponse } from "../../protocols/http"
 
 export class TransactionController {
     handle(httpRequest: HttpRequest): HttpResponse {
-        const { accountOrigin, accountDestination, value } = httpRequest.body
+        const requiredFields = ['accountOrigin', 'accountDestination', 'value']
 
-        if (!accountOrigin) {
-            return badRequest(new MissingParamError('accountOrigin'))
+        for (const field of requiredFields) {
+            if (!httpRequest.body[field]) {
+                return badRequest(new MissingParamError(field))
+
+            }
         }
-
-        if (!accountDestination) {
-            return badRequest(new MissingParamError('accountDestination'))
-        }
-
-        if (!value) {
-            return badRequest(new MissingParamError('value'))
-        }
-
     }
 }
