@@ -14,6 +14,12 @@ const makeAccountValidator = (): AccountValidator => {
     return new AccountValidatorStub()
 }
 
+const makeFakeTransaction = () => ({
+    accountOrigin: 'any_accountOrigin',
+    accountDestination: 'any_accountDestination',
+    value: 123
+})
+
 interface SutTypes {
     sut: TransactionController
     accountValidatorStub: AccountValidator
@@ -101,5 +107,20 @@ describe('Transaction Controller', () => {
         const httpResponse = sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body).toEqual(new InvalidParamError('accountDestination'))
+    })
+
+    test('Should return 400 if an invalid accountDestination is provided', () => {
+        const { sut, accountValidatorStub } = makeSut()
+
+        const accountOriginIsValidSpy = jest.spyOn(accountValidatorStub, 'accountOriginIsValid')
+        const accountDestinationIsValid = jest.spyOn(accountValidatorStub, 'accountDestinationIsValid')
+
+        const httpRequest = {
+            body: makeFakeTransaction()
+        }
+
+        sut.handle(httpRequest)
+        expect(accountOriginIsValidSpy).toHaveBeenCalledWith('any_accountOrigin')
+        expect(accountDestinationIsValid).toHaveBeenCalledWith('any_accountDestination')
     })
 })
