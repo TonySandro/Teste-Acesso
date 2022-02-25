@@ -1,5 +1,5 @@
 import { AccountValidator } from "../../protocols/account-validation"
-import { MissingParamError, InvalidParamError } from "../../errors"
+import { MissingParamError, InvalidParamError, ServerError } from "../../errors"
 import { TransactionController } from "./transaction-controller"
 
 const makeAccountValidator = (): AccountValidator => {
@@ -9,6 +9,18 @@ const makeAccountValidator = (): AccountValidator => {
         }
         accountDestinationIsValid(account: string): boolean {
             return true
+        }
+    }
+    return new AccountValidatorStub()
+}
+
+const makeAccountValidatorWithError = (): AccountValidator => {
+    class AccountValidatorStub implements AccountValidator {
+        accountOriginIsValid(account: string): boolean {
+            throw new Error()
+        }
+        accountDestinationIsValid(account: string): boolean {
+            throw new Error()
         }
     }
     return new AccountValidatorStub()
@@ -109,7 +121,7 @@ describe('Transaction Controller', () => {
         expect(httpResponse.body).toEqual(new InvalidParamError('accountDestination'))
     })
 
-    test('Should return 400 if an invalid accountDestination is provided', () => {
+    test('Should call TransactionValidator with correct accounts', () => {
         const { sut, accountValidatorStub } = makeSut()
 
         const accountOriginIsValidSpy = jest.spyOn(accountValidatorStub, 'accountOriginIsValid')
@@ -123,4 +135,21 @@ describe('Transaction Controller', () => {
         expect(accountOriginIsValidSpy).toHaveBeenCalledWith('any_accountOrigin')
         expect(accountDestinationIsValid).toHaveBeenCalledWith('any_accountDestination')
     })
+
+    test('Should return 500 if TransactionValidator throws', () => {
+        const accountValidatorStub = makeAccountValidatorWithError()
+        const sut = new TransactionController(accountValidatorStub)
+        const httpRequest = {
+            body: {
+                accountOrigin: "any_accountOrigin",
+                accountDestination: "any_accountDestination",
+                value: 123
+            }
+        }
+
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(500)
+        expect(httpResponse.body).toEqual(new ServerError())
+    })
+
 })
