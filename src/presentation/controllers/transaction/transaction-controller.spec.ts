@@ -2,12 +2,7 @@ import { AccountValidator } from "../../protocols/account-validation"
 import { MissingParamError, InvalidParamError } from "../../errors"
 import { TransactionController } from "./transaction-controller"
 
-interface SutTypes {
-    sut: TransactionController
-    accountValidatorStub: AccountValidator
-}
-
-const makeSut = (): SutTypes => {
+const makeAccountValidator = (): AccountValidator => {
     class AccountValidatorStub implements AccountValidator {
         accountOriginIsValid(account: string): boolean {
             return true
@@ -16,12 +11,20 @@ const makeSut = (): SutTypes => {
             return true
         }
     }
+    return new AccountValidatorStub()
+}
 
-    const accountValidatorStub = new AccountValidatorStub()
+interface SutTypes {
+    sut: TransactionController
+    accountValidatorStub: AccountValidator
+}
+
+const makeSut = (): SutTypes => {
+    const accountValidatorStub = makeAccountValidator()
     const sut = new TransactionController(accountValidatorStub)
     return {
         sut,
-        accountValidatorStub
+        accountValidatorStub,
     }
 }
 
@@ -96,8 +99,6 @@ describe('Transaction Controller', () => {
         }
 
         const httpResponse = sut.handle(httpRequest)
-
-        console.error(httpResponse.body)
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body).toEqual(new InvalidParamError('accountDestination'))
     })
