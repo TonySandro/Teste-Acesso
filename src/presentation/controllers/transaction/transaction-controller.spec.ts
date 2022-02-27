@@ -1,5 +1,5 @@
 import { AccountValidator, AddTransaction, AddTransactionModel, TransactionModel } from "./transaction-controller-protocols"
-import { MissingParamError, InvalidParamError, ServerError } from "../../errors"
+import { MissingParamError, InvalidParamError, ServerError, InvalidValueError } from "../../errors"
 import { TransactionController } from "./transaction-controller"
 
 const makeAccountValidator = (): AccountValidator => {
@@ -30,8 +30,8 @@ const makeAddTransaction = (): AddTransaction => {
 }
 
 const makeFakeTransaction = () => ({
-    accountOrigin: 'any_accountOrigin',
-    accountDestination: 'any_accountDestination',
+    accountOrigin: 'valid_accountOrigin',
+    accountDestination: 'valid_accountDestination',
     value: 123
 })
 
@@ -57,8 +57,8 @@ describe('Transaction Controller', () => {
         const { sut } = makeSut()
         const httpRequest = {
             body: {
-                // accountOrigin: "any_accountOrigin",
-                accountDestination: "any_accountDestination",
+                // accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
                 value: 123
             }
         }
@@ -71,8 +71,8 @@ describe('Transaction Controller', () => {
         const { sut } = makeSut()
         const httpRequest = {
             body: {
-                accountOrigin: "any_accountOrigin",
-                // accountDestination: "any_accountDestination",
+                accountOrigin: "valid_accountOrigin",
+                // accountDestination: "valid_accountDestination",
                 value: 123
             }
         }
@@ -85,8 +85,8 @@ describe('Transaction Controller', () => {
         const { sut } = makeSut()
         const httpRequest = {
             body: {
-                accountOrigin: "any_accountOrigin",
-                accountDestination: "any_accountDestination"
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination"
                 // value: 123
             }
         }
@@ -103,7 +103,7 @@ describe('Transaction Controller', () => {
         const httpRequest = {
             body: {
                 accountOrigin: "invalid_accountOrigin",
-                accountDestination: "any_accountDestination",
+                accountDestination: "valid_accountDestination",
                 value: 123
             }
         }
@@ -118,7 +118,7 @@ describe('Transaction Controller', () => {
         jest.spyOn(accountValidatorStub, 'accountDestinationIsValid').mockReturnValueOnce(false)
         const httpRequest = {
             body: {
-                accountOrigin: "any_accountOrigin",
+                accountOrigin: "valid_accountOrigin",
                 accountDestination: "invalid_accountDestination",
                 value: 123
             }
@@ -140,8 +140,8 @@ describe('Transaction Controller', () => {
         }
 
         await sut.handle(httpRequest)
-        expect(accountOriginIsValidSpy).toHaveBeenCalledWith('any_accountOrigin')
-        expect(accountDestinationIsValid).toHaveBeenCalledWith('any_accountDestination')
+        expect(accountOriginIsValidSpy).toHaveBeenCalledWith('valid_accountOrigin')
+        expect(accountDestinationIsValid).toHaveBeenCalledWith('valid_accountDestination')
     })
 
     test('Should return 500 if TransactionValidator accountOrigin throws', async () => {
@@ -153,8 +153,8 @@ describe('Transaction Controller', () => {
 
         const httpRequest = {
             body: {
-                accountOrigin: "any_accountOrigin",
-                accountDestination: "any_accountDestination",
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
                 value: 123
             }
         }
@@ -173,8 +173,8 @@ describe('Transaction Controller', () => {
 
         const httpRequest = {
             body: {
-                accountOrigin: "any_accountOrigin",
-                accountDestination: "any_accountDestination",
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
                 value: 123
             }
         }
@@ -188,8 +188,8 @@ describe('Transaction Controller', () => {
         const { sut } = makeSut()
         const httpRequest = {
             body: {
-                accountOrigin: "id_account",
-                accountDestination: "id_account",
+                accountOrigin: "valid_account",
+                accountDestination: "valid_account",
                 value: 123
             }
         }
@@ -229,8 +229,8 @@ describe('Transaction Controller', () => {
 
         const httpRequest = {
             body: {
-                accountOrigin: "any_accountOrigin",
-                accountDestination: "any_accountDestination",
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
                 value: 123
             }
         }
@@ -238,6 +238,21 @@ describe('Transaction Controller', () => {
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body).toEqual(new ServerError())
+    })
+
+    test('Should return 400 if transaction invalid value', async () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
+                value: 0
+            }
+        }
+
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse.body).toEqual(new InvalidValueError(0))
     })
 
     test('Should return 200 if valid data is provided', async () => {
