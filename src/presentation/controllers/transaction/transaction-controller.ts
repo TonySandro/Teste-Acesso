@@ -36,14 +36,14 @@ export class TransactionController implements Controller {
                 return badRequest(new InvalidParamError('accountDestination'))
             }
 
-            this.addTransaction.addTransaction({
+            const transaction = this.addTransaction.addTransaction({
                 accountOrigin,
                 accountDestination,
                 value
             })
 
             return {
-                body: httpRequest.body,
+                body: transaction,
                 statusCode: 200
             }
         } catch (error) {
