@@ -2,10 +2,15 @@ import { HttpRequest, HttpResponse, Controller } from "../../protocols"
 import { MissingParamError, InvalidParamError } from "../../errors"
 import { badRequest, serverError } from "../..//helpers/http/http-helper"
 import { AccountValidator } from "../../protocols/account-validation"
+import { AddTransaction } from "../../../domain/usecases/add-transaction"
 
 export class TransactionController implements Controller {
-    constructor(private readonly accountValidator: AccountValidator) {
+    constructor(
+        private readonly accountValidator: AccountValidator,
+        private readonly addTransaction: AddTransaction
+    ) {
         this.accountValidator = accountValidator
+        this.addTransaction = addTransaction
     }
 
     handle(httpRequest: HttpRequest): HttpResponse {
@@ -18,7 +23,7 @@ export class TransactionController implements Controller {
                 }
             }
 
-            const { accountOrigin, accountDestination } = httpRequest.body
+            const { accountOrigin, accountDestination, value } = httpRequest.body
             const accountOriginIsValid = this.accountValidator.accountOriginIsValid(accountOrigin)
             if (!accountOriginIsValid) {
                 return badRequest(new InvalidParamError('accountOrigin'))
@@ -32,6 +37,12 @@ export class TransactionController implements Controller {
             if (accountOrigin === accountDestination) {
                 return badRequest(new InvalidParamError('accountDestination'))
             }
+
+            this.addTransaction.addTransaction({
+                accountOrigin,
+                accountDestination,
+                value
+            })
 
             return {
                 body: httpRequest.body,
