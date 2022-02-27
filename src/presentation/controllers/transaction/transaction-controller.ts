@@ -1,8 +1,6 @@
-import { HttpRequest, HttpResponse, Controller } from "../../protocols"
+import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError } from "../../errors"
 import { badRequest, serverError } from "../..//helpers/http/http-helper"
-import { AccountValidator } from "../../protocols/account-validation"
-import { AddTransaction } from "../../../domain/usecases/add-transaction"
 
 export class TransactionController implements Controller {
     constructor(

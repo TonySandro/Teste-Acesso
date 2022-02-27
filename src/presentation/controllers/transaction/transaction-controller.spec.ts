@@ -1,8 +1,6 @@
-import { AccountValidator } from "../../protocols/account-validation"
+import { AccountValidator, AddTransaction, AddTransactionModel, TransactionModel } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError, ServerError } from "../../errors"
 import { TransactionController } from "./transaction-controller"
-import { AddTransaction, AddTransactionModel } from "../../../domain/usecases/add-transaction"
-import { TransactionModel } from "../../../domain/models/transaction"
 
 const makeAccountValidator = (): AccountValidator => {
     class AccountValidatorStub implements AccountValidator {
