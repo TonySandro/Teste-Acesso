@@ -7,5 +7,5 @@ export interface AddTransactionModel {
 }
 
 export interface AddTransaction {
-    addTransaction(transaction: AddTransactionModel): TransactionModel
+    addTransaction(transaction: AddTransactionModel): Promise<TransactionModel>
 }

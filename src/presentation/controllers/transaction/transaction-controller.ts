@@ -11,7 +11,7 @@ export class TransactionController implements Controller {
         this.addTransaction = addTransaction
     }
 
-    handle(httpRequest: HttpRequest): HttpResponse {
+    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
             const requiredFields = ['accountOrigin', 'accountDestination', 'value']
 
@@ -36,7 +36,7 @@ export class TransactionController implements Controller {
                 return badRequest(new InvalidParamError('accountDestination'))
             }
 
-            const transaction = this.addTransaction.addTransaction({
+            const transaction = await this.addTransaction.addTransaction({
                 accountOrigin,
                 accountDestination,
                 value
