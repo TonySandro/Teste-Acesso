@@ -240,4 +240,24 @@ describe('Transaction Controller', () => {
         expect(httpResponse.body).toEqual(new ServerError())
     })
 
+    test('Should return 200 if valid data is provided', () => {
+        const { sut } = makeSut()
+
+        const httpRequest = {
+            body: {
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
+                value: 123
+            }
+        }
+
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(200)
+        expect(httpResponse.body).toEqual({
+            transactionId: "valid_id",
+            accountOrigin: "valid_accountOrigin",
+            accountDestination: "valid_accountDestination",
+            value: 123
+        })
+    })
 })
