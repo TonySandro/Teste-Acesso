@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError } from "../../errors"
-import { badRequest, serverError } from "../..//helpers/http/http-helper"
+import { badRequest, serverError, success } from "../../helpers/http/http-helper"
 
 export class TransactionController implements Controller {
     constructor(
@@ -42,10 +42,7 @@ export class TransactionController implements Controller {
                 value
             })
 
-            return {
-                body: transaction,
-                statusCode: 200
-            }
+            return success(transaction)
         } catch (error) {
             return serverError()
         }
