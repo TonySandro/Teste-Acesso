@@ -28,6 +28,10 @@ export class TransactionController implements Controller {
                 return badRequest(new InvalidParamError('accountDestination'))
             }
 
+            if (httpRequest.body.accountOrigin === httpRequest.body.accountDestination) {
+                return badRequest(new InvalidParamError('accountDestination'))
+            }
+
             return {
                 body: httpRequest.body,
                 statusCode: 200
