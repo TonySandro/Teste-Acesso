@@ -219,4 +219,25 @@ describe('Transaction Controller', () => {
             value: 123
         })
     })
+
+    test('Should return 500 if AddTransaction throws', () => {
+        const { sut, addTransactionStub } = makeSut()
+
+        jest.spyOn(addTransactionStub, 'addTransaction').mockImplementationOnce(() => {
+            throw new Error()
+        })
+
+        const httpRequest = {
+            body: {
+                accountOrigin: "any_accountOrigin",
+                accountDestination: "any_accountDestination",
+                value: 123
+            }
+        }
+
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(500)
+        expect(httpResponse.body).toEqual(new ServerError())
+    })
+
 })
