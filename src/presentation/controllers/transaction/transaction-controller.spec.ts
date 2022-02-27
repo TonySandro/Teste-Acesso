@@ -14,18 +14,6 @@ const makeAccountValidator = (): AccountValidator => {
     return new AccountValidatorStub()
 }
 
-const makeAccountValidatorWithError = (): AccountValidator => {
-    class AccountValidatorStub implements AccountValidator {
-        accountOriginIsValid(account: string): boolean {
-            throw new Error()
-        }
-        accountDestinationIsValid(account: string): boolean {
-            throw new Error()
-        }
-    }
-    return new AccountValidatorStub()
-}
-
 const makeFakeTransaction = () => ({
     accountOrigin: 'any_accountOrigin',
     accountDestination: 'any_accountDestination',
@@ -84,6 +72,7 @@ describe('Transaction Controller', () => {
                 // value: 123
             }
         }
+
         const httpResponse = sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body).toEqual(new MissingParamError('value'))
@@ -92,6 +81,7 @@ describe('Transaction Controller', () => {
     test('Should return 400 if an invalid accountOrigin is provided', () => {
         const { sut, accountValidatorStub } = makeSut()
         jest.spyOn(accountValidatorStub, 'accountOriginIsValid').mockReturnValueOnce(false)
+
         const httpRequest = {
             body: {
                 accountOrigin: "invalid_accountOrigin",
@@ -136,9 +126,33 @@ describe('Transaction Controller', () => {
         expect(accountDestinationIsValid).toHaveBeenCalledWith('any_accountDestination')
     })
 
-    test('Should return 500 if TransactionValidator throws', () => {
-        const accountValidatorStub = makeAccountValidatorWithError()
-        const sut = new TransactionController(accountValidatorStub)
+    test('Should return 500 if TransactionValidator accountOrigin throws', () => {
+        const { sut, accountValidatorStub } = makeSut()
+
+        jest.spyOn(accountValidatorStub, 'accountOriginIsValid').mockImplementationOnce(() => {
+            throw new Error()
+        })
+
+        const httpRequest = {
+            body: {
+                accountOrigin: "any_accountOrigin",
+                accountDestination: "any_accountDestination",
+                value: 123
+            }
+        }
+
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(500)
+        expect(httpResponse.body).toEqual(new ServerError())
+    })
+
+    test('Should return 500 if TransactionValidator accountDestination throws', () => {
+        const { sut, accountValidatorStub } = makeSut()
+
+        jest.spyOn(accountValidatorStub, 'accountDestinationIsValid').mockImplementationOnce(() => {
+            throw new Error()
+        })
+
         const httpRequest = {
             body: {
                 accountOrigin: "any_accountOrigin",
