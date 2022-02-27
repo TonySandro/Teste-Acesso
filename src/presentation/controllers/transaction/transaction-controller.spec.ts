@@ -166,4 +166,18 @@ describe('Transaction Controller', () => {
         expect(httpResponse.body).toEqual(new ServerError())
     })
 
+    test('Should return 400 if accountOrigin to equal accountDestination', () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                accountOrigin: "id_account",
+                accountDestination: "id_account",
+                value: 123
+            }
+        }
+
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse.body).toEqual(new InvalidParamError("accountDestination"))
+    })
 })
