@@ -22,6 +22,11 @@ describe('Transaction Mongo Repository', () => {
         await MongoHelper.disconnect()
     })
 
+    beforeEach(async () => {
+        const transactionCollection = MongoHelper.getCollection('transaction')
+        await (await transactionCollection).deleteMany({})
+    })
+
     test('Should return an transaction on success', async () => {
         const { sut } = makeSut()
         const transaction = await sut.addTransaction({
