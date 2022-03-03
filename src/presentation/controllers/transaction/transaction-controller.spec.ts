@@ -275,4 +275,19 @@ describe('Transaction Controller', () => {
             value: 123
         })
     })
+
+    test('Should return 400 if no accountOrigin is provided', async () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                id: 0,
+                accountNumber: "valid_accountNumber",
+                balance: 0
+            }
+        }
+
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse.body).toEqual(new MissingParamError('accountOrigin'))
+    })
 })
