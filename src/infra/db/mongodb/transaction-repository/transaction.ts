@@ -7,7 +7,6 @@ export class TransactionMongoRepository {
         const accountCollection = await MongoHelper.getCollection('transaction')
         const result = await accountCollection.insertOne(transactionData)
         const transaction = await accountCollection.findOne(result.insertedId)
-        console.log(transaction)
         return MongoHelper.map(transaction);
     }
 

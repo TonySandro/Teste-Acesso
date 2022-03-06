@@ -30,10 +30,11 @@
   "dependencies": {
     "axios": "^0.24.0",
     "express": "^4.17.2",
+    "fast-glob": "^3.2.11",
+    "mongodb": "^4.3.1",
     "mongoose": "^6.1.6",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.4",
-    "uuidv4": "^6.2.12",
-    "mongodb": "^4.3.1"
+    "uuidv4": "^6.2.12"
   }
 }
