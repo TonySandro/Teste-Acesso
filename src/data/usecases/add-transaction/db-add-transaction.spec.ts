@@ -1,6 +1,16 @@
+import { AddTransactionRepository } from "data/protocols/db/transaction/add-transaction-repository"
 import { TransactionModel } from "domain/models/transaction"
 import { AddTransactionModel } from "domain/usecases/add-transaction"
 import { DbAddTransaction } from "./db-add-transaction"
+
+const makeAddTransactionRepository = (): AddTransactionRepository => {
+    class AddTransactionRepositoryStub implements AddTransactionRepository {
+        async addTransaction(transactionData: AddTransactionModel): Promise<TransactionModel> {
+            return new Promise(resolve => resolve(makeFakeTransaction()))
+        }
+    }
+    return new AddTransactionRepositoryStub()
+}
 
 const makeFakeTransaction = (): TransactionModel => ({
     transactionId: 'valid_transactionId',
@@ -20,7 +30,8 @@ interface SutTypes {
 }
 
 const makeSut = (): SutTypes => {
-    const sut = new DbAddTransaction()
+    const addTransactionRepositoryStub = makeAddTransactionRepository()
+    const sut = new DbAddTransaction(addTransactionRepositoryStub)
     return {
         sut,
     }

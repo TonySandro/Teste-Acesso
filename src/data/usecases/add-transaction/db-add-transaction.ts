@@ -6,7 +6,7 @@ export class DbAddTransaction implements AddTransaction {
     constructor(private readonly addTransactionRepository: AddTransactionRepository) { }
 
     async addTransaction(transactionData: AddTransactionModel): Promise<TransactionModel> {
-        const transaction = await this.addTransactionRepository.add(Object.assign(transactionData))
+        const transaction = await this.addTransactionRepository.addTransaction(Object.assign(transactionData))
 
         return transaction
     }
