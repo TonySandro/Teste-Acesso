@@ -1,13 +1,13 @@
-import { TransactionModel } from "domain/models/transaction";
+import { AddTransactionRepository } from "../../../data/protocols/db/transaction/add-transaction-repository";
+import { TransactionModel } from "../../../domain/models/transaction";
 import { AddTransaction, AddTransactionModel } from "../../../domain/usecases/add-transaction";
 
 export class DbAddTransaction implements AddTransaction {
+    constructor(private readonly addTransactionRepository: AddTransactionRepository) { }
+
     async addTransaction(transactionData: AddTransactionModel): Promise<TransactionModel> {
-        return {
-            transactionId: "valid_transactionId",
-            accountOrigin: "valid_accountOrigin",
-            accountDestination: "valid_accountDestination",
-            value: 123
-        }
+        const transaction = await this.addTransactionRepository.add(Object.assign(transactionData))
+
+        return transaction
     }
 }
