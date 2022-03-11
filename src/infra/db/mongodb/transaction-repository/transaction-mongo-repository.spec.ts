@@ -1,5 +1,5 @@
 import { MongoHelper } from "../helpers/mongo-helper"
-import { TransactionMongoRepository } from "./transaction"
+import { TransactionMongoRepository } from "./transaction-mongo-repository"
 
 interface SutTypes {
     sut: TransactionMongoRepository
