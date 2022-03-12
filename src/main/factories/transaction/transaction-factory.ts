@@ -1,7 +1,7 @@
 import { DbAddTransaction } from "../../../data/usecases/add-transaction/db-add-transaction";
 import { TransactionMongoRepository } from "../../../infra/db/mongodb/transaction-repository/transaction-mongo-repository";
 import { TransactionController } from "../../../presentation/controllers/transaction/transaction-controller";
-import { AccountValidatorAdapter } from "../../../utils/account-validator-adapter";
+import { AccountValidatorAdapter } from "../../adapters/validators/account-validator-adapter";
 
 export const makeTransactionController = (): TransactionController => {
     const accountValidatorAdapter = new AccountValidatorAdapter()

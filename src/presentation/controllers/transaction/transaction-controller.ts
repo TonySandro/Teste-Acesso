@@ -1,7 +1,7 @@
 import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError, InvalidValueError } from "../../errors"
 import { badRequest, serverError, success } from "../../helpers/http/http-helper"
-import { creditTransactionApi, debitTransactionApi } from "infra/axios/helpers/api-helper"
+import { creditTransactionApi, debitTransactionApi } from "../../../infra/axios/helpers/api-helper"
 
 export class TransactionController implements Controller {
     constructor(
@@ -41,8 +41,8 @@ export class TransactionController implements Controller {
                 return badRequest(new InvalidParamError('accountDestination'))
             }
 
-            await creditTransactionApi(accountDestination, value)
-            await debitTransactionApi(accountOrigin, value)
+            // await creditTransactionApi(accountDestination, value)
+            // await debitTransactionApi(accountOrigin, value)
 
             const transaction = await this.addTransaction.addTransaction({
                 accountOrigin,
