@@ -7,6 +7,7 @@ export const debitTransactionApi = async (accountOrigin: string, value: number) 
         type: "Debit"
     })
 }
+
 export const creditTransactionApi = async (accountDestination: string, value: number) => {
     return await api.post(`/Account`, {
         accountNumber: accountDestination,
@@ -15,3 +16,7 @@ export const creditTransactionApi = async (accountDestination: string, value: nu
     })
 }
 
+export const accountBalanceInquiry = async (accountNumber: string) => {
+    const data = await api.get(`/Account/${accountNumber}`)
+    return data
+}
