@@ -64,7 +64,7 @@ describe('Transaction Controller', () => {
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new MissingParamError('accountOrigin'))
+        expect(httpResponse.body.Message).toEqual(new MissingParamError('accountOrigin'))
     })
 
     test('Should return 400 if no accountDestination is provided', async () => {
@@ -78,7 +78,7 @@ describe('Transaction Controller', () => {
         }
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new MissingParamError('accountDestination'))
+        expect(httpResponse.body.Message).toEqual(new MissingParamError('accountDestination'))
     })
 
     test('Should return 400 if no value is provided', async () => {
@@ -93,7 +93,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new MissingParamError('value'))
+        expect(httpResponse.body.Message).toEqual(new MissingParamError('value'))
     })
 
     test('Should return 400 if an invalid accountOrigin is provided', async () => {
@@ -110,7 +110,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new InvalidParamError('accountOrigin'))
+        expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountOrigin'))
     })
 
     test('Should return 400 if an invalid accountDestination is provided', async () => {
@@ -126,7 +126,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new InvalidParamError('accountDestination'))
+        expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountDestination'))
     })
 
     test('Should call TransactionValidator with correct accounts', async () => {
@@ -161,7 +161,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
-        expect(httpResponse.body).toEqual(new ServerError())
+        expect(httpResponse.body.Message).toEqual(new ServerError())
     })
 
     test('Should return 500 if TransactionValidator accountDestination throws', async () => {
@@ -181,7 +181,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
-        expect(httpResponse.body).toEqual(new ServerError())
+        expect(httpResponse.body.Message).toEqual(new ServerError())
     })
 
     test('Should return 400 if accountOrigin to equal accountDestination', async () => {
@@ -196,7 +196,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new InvalidParamError("accountDestination"))
+        expect(httpResponse.body.Message).toEqual(new InvalidParamError("accountDestination"))
     })
 
     test('Should call AddTransaction with correct values', async () => {
@@ -237,7 +237,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(500)
-        expect(httpResponse.body).toEqual(new ServerError())
+        expect(httpResponse.body.Message).toEqual(new ServerError())
     })
 
     test('Should return 400 if transaction invalid value', async () => {
@@ -252,7 +252,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new InvalidValueError(0))
+        expect(httpResponse.body.Message).toEqual(new InvalidValueError(0))
     })
 
     // test('Should return 200 if valid data is provided', async () => {
@@ -267,7 +267,7 @@ describe('Transaction Controller', () => {
 
     //     const httpResponse = await sut.handle(httpRequest)
     //     expect(httpResponse.statusCode).toBe(200)
-    //     expect(httpResponse.body).toEqual({
+    //     expect(httpResponse.body.Message).toEqual({
     //         transactionId: "valid_id",
     //         accountOrigin: "valid_accountOrigin",
     //         accountDestination: "valid_accountDestination",
@@ -287,6 +287,6 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body).toEqual(new MissingParamError('accountOrigin'))
+        expect(httpResponse.body.Message).toEqual(new MissingParamError('accountOrigin'))
     })
 })

@@ -4,19 +4,29 @@ import { HttpResponse } from "../../protocols/http"
 export const badRequest = (error: Error): HttpResponse => {
     return {
         statusCode: 400,
-        body: error
+        body: {
+            Status: "Error",
+            Message: error
+        }
     }
 }
 
 export const serverError = (error?: any): HttpResponse => {
     return {
         statusCode: 500,
-        body: new ServerError(error)
+        body: {
+            Status: "Error",
+            Message: new ServerError(error)
+        }
     }
 }
+
 export const success = (data: any): HttpResponse => {
     return {
         statusCode: 200,
-        body: data
+        body: {
+            transactionId: data.transactionId,
+            Status: "Confirmed"
+        }
     }
 }
