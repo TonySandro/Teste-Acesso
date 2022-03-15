@@ -4,13 +4,13 @@ import { AccountValidator } from "../../../presentation/protocols/account-valida
 export class AccountValidatorAdapter implements AccountValidator {
     async accountDestinationIsValid(accountDestination: string): Promise<boolean> {
         const accountData = await accountBalanceInquiry(accountDestination)
-        if (accountData.status === 404) return false;
+        if (accountData === null) return false;
         else return true
     }
 
     async accountOriginIsValid(accountOrigin: string): Promise<boolean> {
         const accountData = await accountBalanceInquiry(accountOrigin)
-        if (accountData.status === 404) return false;
+        if (accountData === null) return false;
         else return true
     }
 }

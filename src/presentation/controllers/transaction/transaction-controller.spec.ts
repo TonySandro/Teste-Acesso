@@ -196,7 +196,7 @@ describe('Transaction Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new InvalidParamError("accountDestination"))
+        expect(httpResponse.body.Message).toEqual(new InvalidParamError("accountDestination to equal accountOrigin"))
     })
 
     test('Should call AddTransaction with correct values', async () => {

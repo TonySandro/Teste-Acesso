@@ -17,6 +17,11 @@ export const creditTransactionApi = async (accountDestination: string, value: nu
 }
 
 export const accountBalanceInquiry = async (accountNumber: string) => {
-    const data = await api.get(`/Account/${accountNumber}`)
+    const data = await api.get(`/Account/${accountNumber}`).then(res => {
+        return res
+    }).catch(err => {
+        return null
+    })
+
     return data
 }

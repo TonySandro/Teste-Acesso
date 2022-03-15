@@ -27,17 +27,20 @@ export class TransactionController implements Controller {
                     return badRequest(new MissingParamError(field))
                 }
             }
+            if (accountOrigin === accountDestination) {
+                return badRequest(new InvalidParamError('accountDestination to equal accountOrigin'))
+            }
 
-            const accountOriginIsValid = await this.accountValidator.accountOriginIsValid(accountOrigin)
-            const accountDestinationIsValid = await this.accountValidator.accountDestinationIsValid(accountDestination)
-
-            if (!accountOriginIsValid) {
+            if (!await this.accountValidator.accountOriginIsValid(accountOrigin)) {
+                console.log("badRequest origin")
                 return badRequest(new InvalidParamError('accountOrigin'))
             }
 
-            if (!accountDestinationIsValid || accountOrigin === accountDestination) {
+            if (!await this.accountValidator.accountDestinationIsValid(accountDestination)) {
+                console.log("badRequest destination")
                 return badRequest(new InvalidParamError('accountDestination'))
             }
+
 
             const transaction = await this.addTransaction.addTransaction({
                 accountOrigin,
