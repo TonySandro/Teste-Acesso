@@ -16,13 +16,14 @@ describe('Transaction Routes', () => {
         const transactionCollection = MongoHelper.getCollection('transaction')
         await (await transactionCollection).deleteMany({})
     })
+
     test('Should return an account on success', async () => {
         await request(app)
             .post('/api/fund-transfer')
             .send({
-                accountOrigin: "123",
-                accountDestination: "1234",
-                value: 123
+                accountOrigin: "74871034",
+                accountDestination: "24830294",
+                value: 1
             })
             .expect(200)
     })

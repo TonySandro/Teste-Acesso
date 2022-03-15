@@ -1,7 +1,8 @@
 import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError, InvalidValueError } from "../../errors"
 import { badRequest, serverError, success } from "../../helpers/http/http-helper"
-// import { creditTransactionApi, debitTransactionApi } from "../../../infra/http/axios/helpers/api-helper"
+import { accountBalanceInquiry } from "../../../infra/http/axios/helpers/api-helper"
+import { creditTransactionApi, debitTransactionApi } from "../../../infra/http/axios/helpers/api-helper"
 
 export class TransactionController implements Controller {
     constructor(
@@ -27,22 +28,16 @@ export class TransactionController implements Controller {
                 }
             }
 
-            const accountOriginIsValid = this.accountValidator.accountOriginIsValid(accountOrigin)
+            const accountOriginIsValid = await this.accountValidator.accountOriginIsValid(accountOrigin)
+            const accountDestinationIsValid = await this.accountValidator.accountDestinationIsValid(accountDestination)
+
             if (!accountOriginIsValid) {
                 return badRequest(new InvalidParamError('accountOrigin'))
             }
 
-            const accountDestinationIsValid = this.accountValidator.accountDestinationIsValid(accountDestination)
-            if (!accountDestinationIsValid) {
+            if (!accountDestinationIsValid || accountOrigin === accountDestination) {
                 return badRequest(new InvalidParamError('accountDestination'))
             }
-
-            if (accountOrigin === accountDestination) {
-                return badRequest(new InvalidParamError('accountDestination'))
-            }
-
-            // await creditTransactionApi(accountDestination, value)
-            // await debitTransactionApi(accountOrigin, value)
 
             const transaction = await this.addTransaction.addTransaction({
                 accountOrigin,
@@ -50,9 +45,23 @@ export class TransactionController implements Controller {
                 value
             })
 
+            const accountOriginExists = await accountBalanceInquiry(accountOrigin)
+            const accountDestinationExists = await accountBalanceInquiry(accountDestination)
+
+            if (!accountOriginExists) {
+                return badRequest(new InvalidParamError('accountOrigin'))
+            }
+
+            if (!accountDestinationExists) {
+                return badRequest(new InvalidParamError('accountOrigin'))
+            }
+
+            await creditTransactionApi(accountDestination, value)
+            await debitTransactionApi(accountOrigin, value)
+
             return success(transaction)
         } catch (error) {
-            return serverError()
+            return serverError(error)
         }
     }
 }

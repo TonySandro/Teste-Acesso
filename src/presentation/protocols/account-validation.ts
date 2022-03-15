@@ -1,5 +1,5 @@
 export interface AccountValidator {
-    accountOriginIsValid(account: string): boolean
+    accountOriginIsValid(accountOrigin: string): Promise<boolean>
 
-    accountDestinationIsValid(account: string): boolean
+    accountDestinationIsValid(accountDestination: string): Promise<boolean>
 }
