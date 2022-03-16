@@ -32,35 +32,33 @@ export class TransactionController implements Controller {
             }
 
             if (!await this.accountValidator.accountOriginIsValid(accountOrigin)) {
-                console.log("badRequest origin")
                 return badRequest(new InvalidParamError('accountOrigin'))
             }
 
             if (!await this.accountValidator.accountDestinationIsValid(accountDestination)) {
-                console.log("badRequest destination")
                 return badRequest(new InvalidParamError('accountDestination'))
             }
 
+            // const accountOriginExists = await accountBalanceInquiry(accountOrigin)
+            // const accountDestinationExists = await accountBalanceInquiry(accountDestination)
+
+            // if (!accountOriginExists) {
+            //     return badRequest(new InvalidParamError('accountOrigin'))
+            // }
+
+            // if (!accountDestinationExists) {
+            //     return badRequest(new InvalidParamError('accountOrigin'))
+            // }
 
             const transaction = await this.addTransaction.addTransaction({
                 accountOrigin,
                 accountDestination,
+                status: "Confirmed",
                 value
             })
 
-            const accountOriginExists = await accountBalanceInquiry(accountOrigin)
-            const accountDestinationExists = await accountBalanceInquiry(accountDestination)
-
-            if (!accountOriginExists) {
-                return badRequest(new InvalidParamError('accountOrigin'))
-            }
-
-            if (!accountDestinationExists) {
-                return badRequest(new InvalidParamError('accountOrigin'))
-            }
-
-            await creditTransactionApi(accountDestination, value)
-            await debitTransactionApi(accountOrigin, value)
+            // await creditTransactionApi(accountDestination, value)
+            // await debitTransactionApi(accountOrigin, value)
 
             return success(transaction)
         } catch (error) {

@@ -16,13 +16,15 @@ const makeFakeTransaction = (): TransactionModel => ({
     transactionId: 'valid_transactionId',
     accountOrigin: 'valid_accountOrigin',
     accountDestination: 'valid_accountDestination',
-    value: 123
+    value: 123,
+    status: "Confirmed"
 })
 
 const makeFakeTransactionData = (): AddTransactionModel => ({
     accountOrigin: 'valid_accountOrigin',
     accountDestination: 'valid_accountDestination',
-    value: 123
+    value: 123,
+    status: "Confirmed"
 })
 
 interface SutTypes {

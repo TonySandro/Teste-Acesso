@@ -32,7 +32,8 @@ describe('Transaction Mongo Repository', () => {
         const transaction = await sut.addTransaction({
             accountOrigin: "valid_accountOrigin",
             accountDestination: "valid_accountDestination",
-            value: 123
+            value: 123,
+            status: "Confirmed"
         })
 
         expect(transaction).toBeTruthy()

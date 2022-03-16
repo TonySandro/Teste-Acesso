@@ -21,6 +21,7 @@ const makeAddTransaction = (): AddTransaction => {
                 transactionId: 'valid_id',
                 accountOrigin: 'valid_accountOrigin',
                 accountDestination: 'valid_accountDestination',
+                status: "Confirmed",
                 value: 123
             }
             return new Promise(resolve => resolve(fakeTransaction))
@@ -53,6 +54,11 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Transaction Controller', () => {
+    beforeEach((): void => {
+        jest.setTimeout(80000);
+        // jest.useFakeTimers('legacy')
+    });
+
     test('Should return 400 if no accountOrigin is provided', async () => {
         const { sut } = makeSut()
         const httpRequest = {
@@ -86,7 +92,7 @@ describe('Transaction Controller', () => {
         const httpRequest = {
             body: {
                 accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination"
+                accountDestination: "valid_accountDestination",
                 // value: 123
             }
         }
@@ -216,6 +222,7 @@ describe('Transaction Controller', () => {
         expect(addSpy).toHaveBeenCalledWith({
             accountOrigin: 'valid_accountOrigin',
             accountDestination: 'valid_accountDestination',
+            status: "Confirmed",
             value: 123
         })
     })
@@ -267,10 +274,11 @@ describe('Transaction Controller', () => {
 
     //     const httpResponse = await sut.handle(httpRequest)
     //     expect(httpResponse.statusCode).toBe(200)
-    //     expect(httpResponse.body.Message).toEqual({
+    //     expect(httpResponse.body).toEqual({
     //         transactionId: "valid_id",
     //         accountOrigin: "valid_accountOrigin",
     //         accountDestination: "valid_accountDestination",
+    //         status: "Confirmed",
     //         value: 123
     //     })
     // })

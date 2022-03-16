@@ -4,6 +4,7 @@ export interface AddTransactionModel {
     accountOrigin: string
     accountDestination: string
     value: number
+    status: string
 }
 
 export interface AddTransaction {
