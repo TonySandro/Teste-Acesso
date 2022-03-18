@@ -21,4 +21,20 @@ describe('Consultation Controller', () => {
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body.Message).toEqual(new MissingParamError("transactionId"))
     })
+
+    test('Should return 200 if valid data is provided', async () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                transactionId: "valid_transaction_id",
+            }
+        }
+
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(200)
+        expect(httpResponse.body).toEqual({
+            transactionId: "valid_transaction_id",
+            status: "Confirmed" || "Error"
+        })
+    })
 })
