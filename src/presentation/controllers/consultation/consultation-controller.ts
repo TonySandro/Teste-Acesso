@@ -11,9 +11,10 @@ export class ConsultationController implements Controller {
         }
 
         return {
-            statusCode: 400,
+            statusCode: 200,
             body: {
-                transactionId: "fic"
+                transactionId: "valid_transaction_id",
+                status: "Confirmed"
             }
         }
     }
