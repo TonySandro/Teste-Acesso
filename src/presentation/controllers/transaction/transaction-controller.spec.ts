@@ -30,10 +30,12 @@ const makeAddTransaction = (): AddTransaction => {
     return new AddTransactionStub()
 }
 
-const makeFakeTransaction = () => ({
-    accountOrigin: 'valid_accountOrigin',
-    accountDestination: 'valid_accountDestination',
-    value: 123
+const makeFakeRequest = () => ({
+    body: {
+        accountOrigin: 'valid_accountOrigin',
+        accountDestination: 'valid_accountDestination',
+        value: 123
+    }
 })
 
 interface SutTypes {
@@ -141,11 +143,7 @@ describe('Transaction Controller', () => {
         const accountOriginIsValidSpy = jest.spyOn(accountValidatorStub, 'accountOriginIsValid')
         const accountDestinationIsValid = jest.spyOn(accountValidatorStub, 'accountDestinationIsValid')
 
-        const httpRequest = {
-            body: makeFakeTransaction()
-        }
-
-        await sut.handle(httpRequest)
+        await sut.handle(makeFakeRequest())
         expect(accountOriginIsValidSpy).toHaveBeenCalledWith('valid_accountOrigin')
         expect(accountDestinationIsValid).toHaveBeenCalledWith('valid_accountDestination')
     })
@@ -157,15 +155,7 @@ describe('Transaction Controller', () => {
             throw new Error()
         })
 
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                value: 123
-            }
-        }
-
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body.Message).toEqual(new ServerError(new Error()))
     })
@@ -177,25 +167,18 @@ describe('Transaction Controller', () => {
             throw new Error()
         })
 
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                value: 123
-            }
-        }
-
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body.Message).toEqual(new ServerError(new Error()))
     })
 
     test('Should return 400 if accountOrigin to equal accountDestination', async () => {
         const { sut } = makeSut()
+
         const httpRequest = {
             body: {
-                accountOrigin: "valid_account",
-                accountDestination: "valid_account",
+                accountOrigin: 'valid_account',
+                accountDestination: 'valid_account',
                 value: 123
             }
         }
@@ -210,15 +193,7 @@ describe('Transaction Controller', () => {
 
         const addSpy = jest.spyOn(addTransactionStub, 'addTransaction')
 
-        const httpRequest = {
-            body: {
-                accountOrigin: 'valid_accountOrigin',
-                accountDestination: 'valid_accountDestination',
-                value: 123
-            }
-        }
-
-        await sut.handle(httpRequest)
+        await sut.handle(makeFakeRequest())
         expect(addSpy).toHaveBeenCalledWith({
             accountOrigin: 'valid_accountOrigin',
             accountDestination: 'valid_accountDestination',
@@ -234,15 +209,7 @@ describe('Transaction Controller', () => {
             return new Promise((resolve, reject) => reject(new Error()))
         })
 
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                value: 123
-            }
-        }
-
-        const httpResponse = await sut.handle(httpRequest)
+        const httpResponse = await sut.handle(makeFakeRequest())
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body.Message).toEqual(new ServerError(new Error()))
     })
@@ -264,15 +231,8 @@ describe('Transaction Controller', () => {
 
     // test('Should return 200 if valid data is provided', async () => {
     //     const { sut } = makeSut()
-    //     const httpRequest = {
-    //         body: {
-    //             accountOrigin: "valid_accountOrigin",
-    //             accountDestination: "valid_accountDestination",
-    //             value: 123
-    //         }
-    //     }
 
-    //     const httpResponse = await sut.handle(httpRequest)
+    //     const httpResponse = await sut.handle(makeFakeRequest())
     //     expect(httpResponse.statusCode).toBe(200)
     //     expect(httpResponse.body).toEqual({
     //         transactionId: "valid_id",
