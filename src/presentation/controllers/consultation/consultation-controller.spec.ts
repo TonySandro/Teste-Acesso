@@ -1,7 +1,7 @@
 import { HttpRequest, ConsultationModel, ReadTransaction } from "./consultation-controller-protocols"
 import { ConsultationController } from "./consultation-controller"
 import { MissingParamError, ServerError } from "../../../presentation/errors"
-import { serverError } from "../../../presentation/helpers/http/http-helper"
+import { success } from "../../../presentation/helpers/http/http-helper"
 
 const makeFakeRequest = (): HttpRequest => ({
     body: {
@@ -55,10 +55,10 @@ describe('Consultation Controller', () => {
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(200)
-        expect(httpResponse.body).toEqual({
+        expect(httpResponse.body).toEqual(success({
             transactionId: "valid_transaction_id",
-            status: "Confirmed" || "Error"
-        })
+            status: "Confirmed"
+        }))
     })
 
     test('Should call readTransaction with correct values', async () => {
