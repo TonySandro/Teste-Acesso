@@ -1,7 +1,6 @@
-import { ReadTransaction } from "domain/usecases/read-transaction";
+import { Controller, HttpRequest, HttpResponse, ReadTransaction } from "./consultation-controller-protocols";
 import { MissingParamError } from "../../../presentation/errors";
 import { badRequest } from "../../../presentation/helpers/http/http-helper";
-import { Controller, HttpRequest, HttpResponse } from "./consultation-controller-protocols";
 
 export class ConsultationController implements Controller {
     constructor(private readonly readTransaction: ReadTransaction) {

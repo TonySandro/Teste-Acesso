@@ -1,7 +1,6 @@
-import { ConsultationModel, ReadTransaction } from "../../../domain/usecases/read-transaction"
+import { HttpRequest, ConsultationModel, ReadTransaction } from "./consultation-controller-protocols"
 import { MissingParamError } from "../../../presentation/errors"
 import { ConsultationController } from "./consultation-controller"
-import { HttpRequest } from "./consultation-controller-protocols"
 
 const makeFakeRequest = (): HttpRequest => ({
     body: {
