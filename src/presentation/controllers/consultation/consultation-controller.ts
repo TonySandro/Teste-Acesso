@@ -14,12 +14,9 @@ export class ConsultationController implements Controller {
                 return badRequest(new MissingParamError("transactionId"))
             }
 
-            await this.readTransaction.read(transactionId)
+            const transactionData = await this.readTransaction.read(transactionId)
 
-            return success({
-                transactionId: transactionId,
-                status: "Confirmed"
-            })
+            return success(transactionData)
         } catch (error) {
             return serverError(error)
         }
