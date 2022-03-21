@@ -1,20 +1,24 @@
 import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError, InvalidValueError } from "../../errors"
 import { badRequest, serverError, success } from "../../helpers/http/http-helper"
-import { accountBalanceInquiry } from "../../../infra/http/axios/helpers/api-helper"
-import { creditTransactionApi, debitTransactionApi } from "../../../infra/http/axios/helpers/api-helper"
+// import { accountBalanceInquiry } from "../../../infra/http/axios/helpers/api-helper"
+// import { creditTransactionApi, debitTransactionApi } from "../../../infra/http/axios/helpers/api-helper"
+import { Validation } from "../../../presentation/helpers/validators/validation"
 
 export class TransactionController implements Controller {
     constructor(
         private readonly accountValidator: AccountValidator,
-        private readonly addTransaction: AddTransaction
+        private readonly addTransaction: AddTransaction,
+        private readonly validation: Validation
     ) {
         this.accountValidator = accountValidator
         this.addTransaction = addTransaction
+        this.validation = validation
     }
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
+            this.validation.validate(httpRequest.body)
             const { accountOrigin, accountDestination, value } = httpRequest.body
             const requiredFields = ['accountOrigin', 'accountDestination', 'value']
 

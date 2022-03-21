@@ -1,6 +1,7 @@
 import { AccountValidator, AddTransaction, AddTransactionModel, TransactionModel } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError, ServerError, InvalidValueError } from "../../errors"
 import { TransactionController } from "./transaction-controller"
+import { Validation } from "../../../presentation/helpers/validators/validation"
 
 const makeAccountValidator = (): AccountValidator => {
     class AccountValidatorStub implements AccountValidator {
@@ -12,6 +13,15 @@ const makeAccountValidator = (): AccountValidator => {
         }
     }
     return new AccountValidatorStub()
+}
+
+const makeValidation = (): Validation => {
+    class ValidationStub implements Validation {
+        validate(input: any): Error {
+            return null
+        }
+    }
+    return new ValidationStub()
 }
 
 const makeAddTransaction = (): AddTransaction => {
@@ -42,16 +52,19 @@ interface SutTypes {
     sut: TransactionController
     accountValidatorStub: AccountValidator
     addTransactionStub: AddTransaction
+    validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
     const addTransactionStub = makeAddTransaction()
     const accountValidatorStub = makeAccountValidator()
-    const sut = new TransactionController(accountValidatorStub, addTransactionStub)
+    const validationStub = makeValidation()
+    const sut = new TransactionController(accountValidatorStub, addTransactionStub, validationStub)
     return {
         sut,
         accountValidatorStub,
-        addTransactionStub
+        addTransactionStub,
+        validationStub
     }
 }
 
@@ -242,4 +255,13 @@ describe('Transaction Controller', () => {
     //         value: 123
     //     })
     // })
+
+    test('Should call Validation with correct value', async () => {
+        const { sut, validationStub } = makeSut()
+        const validateSpy = jest.spyOn(validationStub, 'validate')
+        const httpRequest = makeFakeRequest()
+
+        await sut.handle(httpRequest)
+        expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+    })
 })
