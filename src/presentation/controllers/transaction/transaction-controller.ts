@@ -18,7 +18,10 @@ export class TransactionController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-            this.validation.validate(httpRequest.body)
+            const error = this.validation.validate(httpRequest.body)
+            if (error) {
+                return badRequest(error)
+            }
             const { accountOrigin, accountDestination, value } = httpRequest.body
             const requiredFields = ['accountOrigin', 'accountDestination', 'value']
 
