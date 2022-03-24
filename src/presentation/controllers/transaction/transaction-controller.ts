@@ -23,17 +23,10 @@ export class TransactionController implements Controller {
                 return badRequest(error)
             }
             const { accountOrigin, accountDestination, value } = httpRequest.body
-            const requiredFields = ['accountOrigin', 'accountDestination', 'value']
-
             if (value <= 0) {
                 return badRequest(new InvalidValueError(value))
             }
 
-            for (const field of requiredFields) {
-                if (!httpRequest.body[field]) {
-                    return badRequest(new MissingParamError(field))
-                }
-            }
             if (accountOrigin === accountDestination) {
                 return badRequest(new InvalidParamError('accountDestination to equal accountOrigin'))
             }

@@ -2,11 +2,12 @@ import { DbAddTransaction } from "../../../data/usecases/add-transaction/db-add-
 import { TransactionMongoRepository } from "../../../infra/db/mongodb/transaction-repository/transaction-mongo-repository";
 import { TransactionController } from "../../../presentation/controllers/transaction/transaction-controller";
 import { AccountValidatorAdapter } from "../../adapters/validators/account-validator-adapter";
+import { makeTransactionValidation } from "./transaction-validation";
 
 export const makeTransactionController = (): TransactionController => {
     const accountValidatorAdapter = new AccountValidatorAdapter()
     const transactionMongoRepo = new TransactionMongoRepository()
     const addTransaction = new DbAddTransaction(transactionMongoRepo)
-    const transactionController = new TransactionController(accountValidatorAdapter, addTransaction)
+    const transactionController = new TransactionController(accountValidatorAdapter, addTransaction, makeTransactionValidation())
     return transactionController
 }

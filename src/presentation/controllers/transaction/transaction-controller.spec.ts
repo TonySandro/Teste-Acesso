@@ -75,81 +75,81 @@ describe('Transaction Controller', () => {
         // jest.useFakeTimers('legacy')
     });
 
-    test('Should return 400 if no accountOrigin is provided', async () => {
-        const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                // accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                value: 123
-            }
-        }
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new MissingParamError('accountOrigin'))
-    })
+    // test('Should return 400 if no accountOrigin is provided', async () => {
+    //     const { sut } = makeSut()
+    //     const httpRequest = {
+    //         body: {
+    //             // accountOrigin: "valid_accountOrigin",
+    //             accountDestination: "valid_accountDestination",
+    //             value: 123
+    //         }
+    //     }
+    //     const httpResponse = await sut.handle(httpRequest)
+    //     expect(httpResponse.statusCode).toBe(400)
+    //     expect(httpResponse.body.Message).toEqual(new MissingParamError('accountOrigin'))
+    // })
 
-    test('Should return 400 if no accountDestination is provided', async () => {
-        const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                // accountDestination: "valid_accountDestination",
-                value: 123
-            }
-        }
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new MissingParamError('accountDestination'))
-    })
+    // test('Should return 400 if no accountDestination is provided', async () => {
+    //     const { sut } = makeSut()
+    //     const httpRequest = {
+    //         body: {
+    //             accountOrigin: "valid_accountOrigin",
+    //             // accountDestination: "valid_accountDestination",
+    //             value: 123
+    //         }
+    //     }
+    //     const httpResponse = await sut.handle(httpRequest)
+    //     expect(httpResponse.statusCode).toBe(400)
+    //     expect(httpResponse.body.Message).toEqual(new MissingParamError('accountDestination'))
+    // })
 
-    test('Should return 400 if no value is provided', async () => {
-        const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                // value: 123
-            }
-        }
+    // test('Should return 400 if no value is provided', async () => {
+    //     const { sut } = makeSut()
+    //     const httpRequest = {
+    //         body: {
+    //             accountOrigin: "valid_accountOrigin",
+    //             accountDestination: "valid_accountDestination",
+    //             // value: 123
+    //         }
+    //     }
 
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new MissingParamError('value'))
-    })
+    //     const httpResponse = await sut.handle(httpRequest)
+    //     expect(httpResponse.statusCode).toBe(400)
+    //     expect(httpResponse.body.Message).toEqual(new MissingParamError('value'))
+    // })
 
-    test('Should return 400 if an invalid accountOrigin is provided', async () => {
-        const { sut, accountValidatorStub } = makeSut()
-        jest.spyOn(accountValidatorStub, 'accountOriginIsValid').mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    // test('Should return 400 if an invalid accountOrigin is provided', async () => {
+    //     const { sut, accountValidatorStub } = makeSut()
+    //     jest.spyOn(accountValidatorStub, 'accountOriginIsValid').mockReturnValueOnce(new Promise(resolve => resolve(false)))
 
-        const httpRequest = {
-            body: {
-                accountOrigin: "invalid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                value: 123
-            }
-        }
+    //     const httpRequest = {
+    //         body: {
+    //             accountOrigin: "invalid_accountOrigin",
+    //             accountDestination: "valid_accountDestination",
+    //             value: 123
+    //         }
+    //     }
 
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountOrigin'))
-    })
+    //     const httpResponse = await sut.handle(httpRequest)
+    //     expect(httpResponse.statusCode).toBe(400)
+    //     expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountOrigin'))
+    // })
 
-    test('Should return 400 if an invalid accountDestination is provided', async () => {
-        const { sut, accountValidatorStub } = makeSut()
-        jest.spyOn(accountValidatorStub, 'accountDestinationIsValid').mockReturnValueOnce(new Promise(resolve => resolve(false)))
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                accountDestination: "invalid_accountDestination",
-                value: 123
-            }
-        }
+    // test('Should return 400 if an invalid accountDestination is provided', async () => {
+    //     const { sut, accountValidatorStub } = makeSut()
+    //     jest.spyOn(accountValidatorStub, 'accountDestinationIsValid').mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    //     const httpRequest = {
+    //         body: {
+    //             accountOrigin: "valid_accountOrigin",
+    //             accountDestination: "invalid_accountDestination",
+    //             value: 123
+    //         }
+    //     }
 
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountDestination'))
-    })
+    //     const httpResponse = await sut.handle(httpRequest)
+    //     expect(httpResponse.statusCode).toBe(400)
+    //     expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountDestination'))
+    // })
 
     test('Should call TransactionValidator with correct accounts', async () => {
         const { sut, accountValidatorStub } = makeSut()
