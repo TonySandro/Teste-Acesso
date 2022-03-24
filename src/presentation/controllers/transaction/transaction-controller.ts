@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
-import { InvalidParamError, InvalidValueError } from "../../errors"
+import { InvalidValueError } from "../../errors"
 import { badRequest, serverError, success } from "../../helpers/http/http-helper"
 // import { accountBalanceInquiry } from "../../../infra/http/axios/helpers/api-helper"
 // import { creditTransactionApi, debitTransactionApi } from "../../../infra/http/axios/helpers/api-helper"
@@ -7,11 +7,9 @@ import { Validation } from "../../../presentation/helpers/validators/validation"
 
 export class TransactionController implements Controller {
     constructor(
-        private readonly accountValidator: AccountValidator,
         private readonly addTransaction: AddTransaction,
         private readonly validation: Validation
     ) {
-        this.accountValidator = accountValidator
         this.addTransaction = addTransaction
         this.validation = validation
     }
@@ -25,16 +23,6 @@ export class TransactionController implements Controller {
             const { accountOrigin, accountDestination, value } = httpRequest.body
             if (value <= 0) {
                 return badRequest(new InvalidValueError(value))
-            }
-
-
-
-            if (!await this.accountValidator.accountOriginIsValid(accountOrigin)) {
-                return badRequest(new InvalidParamError('accountOrigin'))
-            }
-
-            if (!await this.accountValidator.accountDestinationIsValid(accountDestination)) {
-                return badRequest(new InvalidParamError('accountDestination'))
             }
 
             // const accountOriginExists = await accountBalanceInquiry(accountOrigin)
