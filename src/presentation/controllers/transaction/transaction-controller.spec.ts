@@ -186,22 +186,6 @@ describe('Transaction Controller', () => {
         expect(httpResponse.body.Message).toEqual(new ServerError(new Error()))
     })
 
-    test('Should return 400 if accountOrigin to equal accountDestination', async () => {
-        const { sut } = makeSut()
-
-        const httpRequest = {
-            body: {
-                accountOrigin: 'valid_account',
-                accountDestination: 'valid_account',
-                value: 123
-            }
-        }
-
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new InvalidParamError("accountDestination to equal accountOrigin"))
-    })
-
     test('Should call AddTransaction with correct values', async () => {
         const { sut, addTransactionStub } = makeSut()
 
