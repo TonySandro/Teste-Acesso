@@ -3,15 +3,15 @@ import { Validation } from "./validation";
 
 export class CompareAccountNumber implements Validation {
     constructor(
-        private readonly accountNumberOrigin: string,
-        private readonly accountNumberDest: string
+        private readonly accountOrigin: string,
+        private readonly accountDestination: string
     ) {
-        this.accountNumberOrigin = accountNumberOrigin
-        this.accountNumberDest = accountNumberDest
+        this.accountOrigin = accountOrigin
+        this.accountDestination = accountDestination
     }
 
     validate(input: any): Error {
-        if (!input[this.accountNumberOrigin] !== !input[this.accountNumberDest]) {
+        if (input[this.accountOrigin] === input[this.accountDestination]) {
             return new InvalidParamError('accountDestination to equal accountOrigin')
         }
     }
