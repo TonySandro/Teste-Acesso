@@ -1,7 +1,6 @@
 import { AccountValidator } from "../../protocols/account-validation";
 import { InvalidParamError } from "../../errors";
 import { Validation } from "./validation";
-import { serverError } from "../http/http-helper";
 
 export class ConfirmingAccountsExist implements Validation {
     constructor(
@@ -17,6 +16,5 @@ export class ConfirmingAccountsExist implements Validation {
         if (!accountExist) {
             return new InvalidParamError(this.accountNumber)
         }
-
     }
 }
