@@ -12,14 +12,11 @@ export class ConfirmingAccountsExist implements Validation {
         this.accountValidator = accountValidator
     }
 
-    async validate(input: any) {
-        try {
-            const accountExist = await this.accountValidator.accountExist(this.accountNumber)
-            if (!accountExist) {
-                return new InvalidParamError(input)
-            }
-        } catch (error) {
-            return serverError(error)
+    async validate(input: any): Promise<Error> {
+        const accountExist = await this.accountValidator.accountExist(input[this.accountNumber])
+        if (!accountExist) {
+            return new InvalidParamError(this.accountNumber)
         }
+
     }
 }
