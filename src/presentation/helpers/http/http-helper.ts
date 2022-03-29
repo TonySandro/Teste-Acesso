@@ -11,6 +11,16 @@ export const badRequest = (error: Error): HttpResponse => {
     }
 }
 
+export const externalServerError = (error: Error): HttpResponse => {
+    return {
+        statusCode: 500,
+        body: {
+            Status: "Error",
+            Message: error
+        }
+    }
+}
+
 export const serverError = (error: Error): HttpResponse => {
     return {
         statusCode: 500,

@@ -1,3 +1,3 @@
 export interface AccountValidator {
-    accountExist(accountNumber: string): Promise<boolean>
+    accountExist(accountNumber: string): Promise<any>
 }

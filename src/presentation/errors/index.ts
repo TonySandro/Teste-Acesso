@@ -1,3 +1,5 @@
+export * from './external-server-error'
+export * from './insufficient-balance-error'
 export * from './invalid-param-error'
 export * from './missing-param-error'
 export * from './invalid-value-error'

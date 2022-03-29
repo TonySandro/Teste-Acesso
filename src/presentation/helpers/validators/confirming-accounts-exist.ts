@@ -1,20 +1,15 @@
 import { AccountValidator } from "../../protocols/account-validation";
-import { InvalidParamError } from "../../errors";
-import { Validation } from "./validation";
 
-export class ConfirmingAccountsExist implements Validation {
-    constructor(
-        private readonly accountNumber: string,
-        private readonly accountValidator: AccountValidator
-    ) {
-        this.accountNumber = accountNumber
-        this.accountValidator = accountValidator
-    }
+export const confirmingAccountExist = async (accountNumber: string, accountValidator: AccountValidator) => {
+    const account: any = await accountValidator.accountExist(accountNumber)
 
-    async validate(input: any): Promise<Error> {
-        const accountExist = await this.accountValidator.accountExist(input[this.accountNumber])
-        if (!accountExist) {
-            return new InvalidParamError(this.accountNumber)
+    if (!account.balance) {
+        if (account.status === 500) {
+            return new Error()
         }
+
+        return null
     }
+
+    return account
 }

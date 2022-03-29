@@ -17,11 +17,11 @@ export const creditTransactionApi = async (accountDestination: string, value: nu
 }
 
 export const accountBalanceInquiry = async (accountNumber: string) => {
-    const data = await api.get(`/Account/${accountNumber}`).then(res => {
-        return res
+    const accountData = await api.get(`/Account/${accountNumber}`).then(res => {
+        return res.data
     }).catch(err => {
-        return null
+        return err.response
     })
 
-    return data
+    return accountData
 }
