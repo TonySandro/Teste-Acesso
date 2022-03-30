@@ -1,5 +1,4 @@
-import { ReadTransactionRepository } from "../../../data/protocols/db/transaction/read-transaction-repository";
-import { ReadTransactionModel, ReadTransaction } from "../../../domain/usecases/read-transaction";
+import { ReadTransactionRepository, ReadTransactionModel, ReadTransaction } from "./db-read-transaction-protocols"
 
 export class DbReadTransaction implements ReadTransaction {
     constructor(private readonly readTransaction: ReadTransactionRepository) { }

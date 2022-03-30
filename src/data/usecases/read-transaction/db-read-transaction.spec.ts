@@ -1,5 +1,4 @@
-import { ReadTransactionRepository } from "../../../data/protocols/db/transaction/read-transaction-repository"
-import { ReadTransactionModel } from "../../../domain/usecases/read-transaction"
+import { ReadTransactionRepository, ReadTransactionModel } from "./db-read-transaction-protocols"
 import { DbReadTransaction } from "./db-read-transaction"
 
 const makeReadTransactionRepository = (): ReadTransactionRepository => {
