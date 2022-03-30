@@ -4,5 +4,5 @@ export interface ReadTransactionModel {
 }
 
 export interface ReadTransaction {
-    read(transaction: string): Promise<ReadTransactionModel>
+    read(transactionId: string): Promise<ReadTransactionModel>
 }
