@@ -53,12 +53,7 @@ const makeSut = (): SutTypes => {
     }
 }
 
-describe('Transaction Controller', () => {
-    beforeEach((): void => {
-        jest.setTimeout(80000);
-        // jest.useFakeTimers('legacy')
-    });
-
+describe('Transaction Controller - no params is provided', () => {
     test('Should return 400 if no accountOrigin is provided', async () => {
         const { sut } = makeSut()
         const httpRequest = {
@@ -101,7 +96,9 @@ describe('Transaction Controller', () => {
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body.Message).toEqual(new MissingParamError('value'))
     })
+})
 
+describe('Transaction Controller - invalid params is provided', () => {
     test('Should return 400 if an invalid accountOrigin is provided', async () => {
         const { sut, accountValidatorStub } = makeSut()
         jest.spyOn(accountValidatorStub, 'accountExist').mockReturnValueOnce(new Promise(resolve => resolve(false)))
@@ -119,33 +116,24 @@ describe('Transaction Controller', () => {
         expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountOrigin'))
     })
 
-    test('Should return 400 if an invalid accountDestination is provided', async () => {
-        const { sut, accountValidatorStub } = makeSut()
-        jest.spyOn(accountValidatorStub, 'accountExist').mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    test('Should return 400 if transaction invalid value', async () => {
+        const { sut } = makeSut()
+
         const httpRequest = {
             body: {
                 accountOrigin: "valid_accountOrigin",
-                accountDestination: "invalid_accountDestination",
-                value: 123
+                accountDestination: "valid_accountDestination",
+                value: 0
             }
         }
 
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new InvalidParamError('accountDestination'))
+        expect(httpResponse.body.Message).toEqual(new InvalidValueError(0))
     })
+})
 
-    test('Should call TransactionValidator with correct accounts', async () => {
-        const { sut, accountValidatorStub } = makeSut()
-
-        const accountOriginIsValidSpy = jest.spyOn(accountValidatorStub, 'accountExist')
-        const accountDestinationIsValid = jest.spyOn(accountValidatorStub, 'accountExist')
-
-        await sut.handle(makeFakeRequest())
-        expect(accountOriginIsValidSpy).toHaveBeenCalledWith('valid_accountOrigin')
-        expect(accountDestinationIsValid).toHaveBeenCalledWith('valid_accountDestination')
-    })
-
+describe('Transaction Controller - transaction validator throws', () => {
     test('Should return 500 if TransactionValidator accountOrigin throws', async () => {
         const { sut, accountValidatorStub } = makeSut()
 
@@ -169,6 +157,11 @@ describe('Transaction Controller', () => {
         expect(httpResponse.statusCode).toBe(500)
         expect(httpResponse.body.Message).toEqual(new ServerError(new Error()))
     })
+})
+describe('Transaction Controller - ensure call with correct params', () => {
+    beforeEach((): void => {
+        jest.setTimeout(80000);
+    });
 
     test('Should return 400 if accountOrigin to equal accountDestination', async () => {
         const { sut } = makeSut()
@@ -186,58 +179,4 @@ describe('Transaction Controller', () => {
         expect(httpResponse.body.Message).toEqual(new InvalidParamError("accountDestination to equal accountOrigin"))
     })
 
-    test('Should call AddTransaction with correct values', async () => {
-        const { sut, addTransactionStub } = makeSut()
-
-        const addSpy = jest.spyOn(addTransactionStub, 'addTransaction')
-
-        await sut.handle(makeFakeRequest())
-        expect(addSpy).toHaveBeenCalledWith({
-            accountOrigin: 'valid_accountOrigin',
-            accountDestination: 'valid_accountDestination',
-            status: "Confirmed",
-            value: 123
-        })
-    })
-
-    test('Should return 500 if AddTransaction throws', async () => {
-        const { sut, addTransactionStub } = makeSut()
-
-        jest.spyOn(addTransactionStub, 'addTransaction').mockImplementationOnce(async () => {
-            return new Promise((resolve, reject) => reject(new Error()))
-        })
-
-        const httpResponse = await sut.handle(makeFakeRequest())
-        expect(httpResponse.statusCode).toBe(500)
-        expect(httpResponse.body.Message).toEqual(new ServerError(new Error()))
-    })
-
-    test('Should return 400 if transaction invalid value', async () => {
-        const { sut } = makeSut()
-        const httpRequest = {
-            body: {
-                accountOrigin: "valid_accountOrigin",
-                accountDestination: "valid_accountDestination",
-                value: 0
-            }
-        }
-
-        const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toBe(400)
-        expect(httpResponse.body.Message).toEqual(new InvalidValueError(0))
-    })
-
-    // test('Should return 200 if valid data is provided', async () => {
-    //     const { sut } = makeSut()
-
-    //     const httpResponse = await sut.handle(makeFakeRequest())
-    //     expect(httpResponse.statusCode).toBe(200)
-    //     expect(httpResponse.body).toEqual({
-    //         transactionId: "valid_id",
-    //         accountOrigin: "valid_accountOrigin",
-    //         accountDestination: "valid_accountDestination",
-    //         status: "Confirmed",
-    //         value: 123
-    //     })
-    // })
 })
