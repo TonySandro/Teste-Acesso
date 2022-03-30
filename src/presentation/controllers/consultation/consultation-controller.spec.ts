@@ -1,4 +1,4 @@
-import { HttpRequest, ConsultationModel, ReadTransaction } from "./consultation-controller-protocols"
+import { HttpRequest, ReadTransactionModel, ReadTransaction } from "./consultation-controller-protocols"
 import { ConsultationController } from "./consultation-controller"
 import { MissingParamError, ServerError } from "../../../presentation/errors"
 import { success } from "../../../presentation/helpers/http/http-helper"
@@ -14,7 +14,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeReadTransaction = (): ReadTransaction => {
     class ReadTransactionStub implements ReadTransaction {
-        read(transactionId: string): Promise<ConsultationModel> {
+        read(transactionId: string): Promise<ReadTransactionModel> {
             return new Promise(resolve => resolve({
                 transactionId: "valid_transaction_id",
                 status: "Confirmed"
