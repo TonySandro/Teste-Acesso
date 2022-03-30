@@ -1,7 +1,6 @@
 import { HttpRequest, HttpResponse, Controller, AddTransaction, AccountValidator } from "./transaction-controller-protocols"
 import { MissingParamError, InvalidParamError, InvalidValueError, ExternalServerError, InsufficientBalanceError } from "../../errors"
 import { badRequest, externalServerError, serverError, success } from "../../helpers/http/http-helper"
-import { accountBalanceInquiry } from "../../../infra/http/axios/helpers/api-helper"
 import { creditTransactionApi, debitTransactionApi } from "../../../infra/http/axios/helpers/api-helper"
 import { confirmingAccountExist } from "../../../presentation/helpers/validators/confirming-accounts-exist"
 
