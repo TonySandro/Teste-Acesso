@@ -1,5 +1,5 @@
 import { AccountValidator, AddTransaction, AddTransactionModel, TransactionModel } from "./transaction-controller-protocols"
-import { MissingParamError, InvalidParamError, ServerError, InvalidValueError } from "../../errors"
+import { MissingParamError, InvalidParamError, ServerError, InvalidValueError, InsufficientBalanceError } from "../../errors"
 import { TransactionController } from "./transaction-controller"
 
 const makeAccountValidator = (): AccountValidator => {
@@ -130,6 +130,33 @@ describe('Transaction Controller - invalid params is provided', () => {
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse.statusCode).toBe(400)
         expect(httpResponse.body.Message).toEqual(new InvalidValueError(0))
+    })
+
+    test('Should return 400 if insufficient balance', async () => {
+        const { sut } = makeSut()
+
+        const httpRequest = {
+            body: {
+                accountOrigin: "valid_accountOrigin",
+                accountDestination: "valid_accountDestination",
+                value: 999
+            }
+        }
+
+        jest.spyOn(sut, "handle")
+            .mockReturnValue(new Promise(resolve => resolve(
+                {
+                    statusCode: 400,
+                    body: {
+                        Status: "Error",
+                        Message: new InsufficientBalanceError(httpRequest.body.value)
+                    }
+                }
+            )))
+
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse.body.Message).toEqual(new InsufficientBalanceError(httpRequest.body.value))
     })
 })
 
