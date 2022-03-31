@@ -1,6 +1,8 @@
-import { AddTransactionRepository } from "data/protocols/db/transaction/add-transaction-repository"
-import { TransactionModel } from "domain/models/transaction"
-import { AddTransactionModel } from "domain/usecases/add-transaction"
+import {
+    AddTransactionModel,
+    AddTransactionRepository,
+    TransactionModel
+} from "./db-add-transaction-protocols";
 import { DbAddTransaction } from "./db-add-transaction"
 
 const makeAddTransactionRepository = (): AddTransactionRepository => {

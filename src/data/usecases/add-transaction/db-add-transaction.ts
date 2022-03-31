@@ -1,6 +1,9 @@
-import { AddTransactionRepository } from "../../../data/protocols/db/transaction/add-transaction-repository";
-import { TransactionModel } from "../../../domain/models/transaction";
-import { AddTransaction, AddTransactionModel } from "../../../domain/usecases/add-transaction";
+import {
+    AddTransaction,
+    AddTransactionModel,
+    AddTransactionRepository,
+    TransactionModel
+} from "./db-add-transaction-protocols";
 
 export class DbAddTransaction implements AddTransaction {
     constructor(private readonly addTransactionRepository: AddTransactionRepository) { }
