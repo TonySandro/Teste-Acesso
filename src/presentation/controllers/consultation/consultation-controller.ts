@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, ReadTransaction } from "./consultation-controller-protocols";
-import { MissingParamError } from "../../../presentation/errors";
+import { InvalidParamError, MissingParamError } from "../../../presentation/errors";
 import { badRequest, serverError, success } from "../../../presentation/helpers/http/http-helper";
 
 export class ConsultationController implements Controller {
@@ -15,6 +15,10 @@ export class ConsultationController implements Controller {
             }
 
             const transactionData = await this.readTransaction.read(transactionId)
+
+            if (!transactionData) {
+                return badRequest(new InvalidParamError("transactionId"))
+            }
 
             return success(transactionData)
         } catch (error) {
