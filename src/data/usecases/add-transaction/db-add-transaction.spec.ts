@@ -29,6 +29,7 @@ const makeFakeTransactionData = (): AddTransactionModel => ({
 
 interface SutTypes {
     sut: DbAddTransaction
+    addTransactionRepositoryStub: AddTransactionRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -36,6 +37,7 @@ const makeSut = (): SutTypes => {
     const sut = new DbAddTransaction(addTransactionRepositoryStub)
     return {
         sut,
+        addTransactionRepositoryStub
     }
 }
 
@@ -44,5 +46,15 @@ describe('DbAddTransaction Usecase', () => {
         const { sut } = makeSut()
         const transaction = await sut.addTransaction(makeFakeTransactionData())
         expect(transaction).toEqual(makeFakeTransaction())
+    })
+
+    test('Should throw if addTransactionRepository throws', async () => {
+        const { sut, addTransactionRepositoryStub } = makeSut()
+
+        jest.spyOn(addTransactionRepositoryStub, 'addTransaction')
+            .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+        const promise = sut.addTransaction(makeFakeTransactionData())
+        await expect(promise).rejects.toThrow()
     })
 })
