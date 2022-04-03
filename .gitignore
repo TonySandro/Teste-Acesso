@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 globalConfig.json
+dist
 
 # Runtime data
 pids
