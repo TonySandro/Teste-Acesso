@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 globalConfig.json
 dist
+yarn.lock*
 
 # Runtime data
 pids
