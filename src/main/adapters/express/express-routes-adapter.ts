@@ -12,3 +12,13 @@ export const adaptRoute = (controller: Controller) => {
         res.status(httpResponse.statusCode).json(httpResponse.body)
     }
 }
+
+export const adaptConsultationRoute = (controller: Controller) => {
+    return async (req: Request, res: Response) => {
+        const httpRequest: HttpRequest = {
+            body: { transactionId: req.params.transactionId }
+        }
+        const httpResponse = await controller.handle(httpRequest)
+        res.status(httpResponse.statusCode).json(httpResponse.body)
+    }
+}
