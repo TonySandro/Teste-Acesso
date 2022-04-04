@@ -22,13 +22,9 @@ Exibir os logs de todas as operações, tempo de resposta deve ser baixo, e meno
 }
 ```
 
-### Request Status
+### Request consult status by transactionId
 
-**GET api/fund-transfer/{transactionId}**
-
-### Request account by accountNumber
-
-**GET api/Account/{accountNumber}**
+**GET api/consult/{transactionId}**
 
 ### Docker
 
