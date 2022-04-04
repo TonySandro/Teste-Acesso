@@ -35,6 +35,8 @@ Para iniciar o container do docker:
 > ## Sobre o código
 
 O mesmo foi desenvolvido de acordo com os pincipios do SOLID, Clean Architecture, TDD, e POO. Utilizando de Small Commits, encontra-se no codigo os design patterns Factory, Adapter, e Decorator.
+
 As bibliotecas e ferramentas utilizadas foram: Typescript, Docker, Jest, MongoDb, Express, Sucrase, Supertest, Axios e docker.
 Associado ao TDD e Jest, foi posto em prática testes unitários, testes de integração, mocks, stubs, e spies
+
 A API também se encontra hospedada no Heroku.
