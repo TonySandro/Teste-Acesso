@@ -19,7 +19,8 @@ const makeAddTransaction = (): AddTransaction => {
                 accountOrigin: 'valid_accountOrigin',
                 accountDestination: 'valid_accountDestination',
                 status: "Confirmed",
-                value: 123
+                value: 123,
+                date: new Date("2022-04-05T01:50:59.173Z")
             }
             return new Promise(resolve => resolve(fakeTransaction))
         }

@@ -15,7 +15,6 @@ export class TransactionController implements Controller {
 
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
         try {
-
             const { accountOrigin, accountDestination, value } = httpRequest.body
             const requiredFields = ['accountOrigin', 'accountDestination', 'value']
 
@@ -55,7 +54,8 @@ export class TransactionController implements Controller {
                 accountOrigin,
                 accountDestination,
                 status: "Confirmed",
-                value
+                value,
+                date: new Date()
             })
 
             await creditTransactionApi(accountDestination, value)

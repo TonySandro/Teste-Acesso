@@ -4,4 +4,5 @@ export interface TransactionModel {
     accountDestination: string
     status: string
     value: number
+    date: Date
 }

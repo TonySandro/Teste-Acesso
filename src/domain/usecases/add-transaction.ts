@@ -5,6 +5,7 @@ export interface AddTransactionModel {
     accountDestination: string
     value: number
     status: string
+    date: Date
 }
 
 export interface AddTransaction {
