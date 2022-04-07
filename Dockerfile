@@ -1,13 +1,6 @@
-FROM node:alpine
+FROM node:16
 
-WORKDIR /usr/app
+WORKDIR /usr/app/teste-acesso
 
-COPY package*.json ./
-
-RUN yarn
-
-COPY . .
-
-EXPOSE 3333
-
-CMD [ "yarn start" ]
+COPY ./package.json .
+RUN npm install --only=prod
