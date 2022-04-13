@@ -1,18 +1,18 @@
-import { MongoHelper } from "../helpers/mongo-helper"
-import { TransactionMongoRepository } from "./transaction-mongo-repository"
+import { MongoHelper } from "../../helpers/mongo-helper"
+import { AddTransactionMongoRepository } from "./add-transaction-mongo-repository"
 
 interface SutTypes {
-    sut: TransactionMongoRepository
+    sut: AddTransactionMongoRepository
 }
 
 const makeSut = (): SutTypes => {
-    const sut = new TransactionMongoRepository()
+    const sut = new AddTransactionMongoRepository()
     return {
         sut
     }
 }
 
-describe('Transaction Mongo Repository', () => {
+describe('Add Transaction Mongo Repository', () => {
 
     beforeAll(async () => {
         await MongoHelper.connect(process.env.MONGO_URL)

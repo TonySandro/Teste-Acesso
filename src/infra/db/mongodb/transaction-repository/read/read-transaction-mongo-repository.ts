@@ -1,7 +1,7 @@
 import { ReadTransactionRepository } from "data/protocols/db/transaction/read-transaction-repository";
 import { ObjectId } from "mongodb";
-import { ReadTransactionModel } from "../../../../domain/usecases/read-transaction";
-import { MongoHelper } from "../helpers/mongo-helper";
+import { ReadTransactionModel } from "../../../../../domain/usecases/read-transaction";
+import { MongoHelper } from "../../helpers/mongo-helper";
 
 export class ReadTransactionMongoRepository implements ReadTransactionRepository {
     async readTransaction(transaction: string): Promise<ReadTransactionModel> {
